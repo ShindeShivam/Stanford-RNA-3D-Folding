@@ -1,0 +1,12 @@
+# Core
+numpy>=1.24.0
+pandas>=2.0.0
+torch>=2.1.0
+biopython>=1.81
+biotite>=0.38.0
+tqdm>=4.65.0
+pyyaml>=6.0
+
+# External models (installed separately — see README)
+# Protenix: https://github.com/bytedance/Protenix
+# RNAPro:   available via Kaggle dataset theoviel/rnapro-src

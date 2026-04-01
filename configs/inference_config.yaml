@@ -1,0 +1,56 @@
+# ─────────────────────────────────────────────
+# Inference configuration
+# ─────────────────────────────────────────────
+
+# ── Data paths ───────────────────────────────
+data:
+  train_sequences:  data/train_sequences.csv
+  train_labels:     data/train_labels.csv
+  test_sequences:   data/test_sequences.csv
+  msa_dir:          data/MSA/
+  output_dir:       outputs/
+
+# ── TBM settings ─────────────────────────────
+tbm:
+  top_n_templates:    30        # candidate pool size
+  top_k_diverse:      12        # weighted sampling pool
+  n_predictions:      5         # outputs per target
+  max_len_ratio_diff: 0.30      # length pre-filter threshold
+  constraint_passes:  2         # geometry refinement passes
+  bond_target:        5.95      # i,i+1 distance (Å)
+  angle_target:       10.20     # i,i+2 distance (Å)
+
+# ── Protenix settings ─────────────────────────
+protenix:
+  model_name:   protenix_base_20250630_v1.0.0
+  n_samples:    5
+  max_seq_len:  1000            # truncate longer sequences
+  seed:         42
+  use_msa:      false
+  use_template: false
+  model_dir:    models/protenix/
+
+# ── RNAPro settings ───────────────────────────
+rnapro:
+  checkpoint:   models/rnapro-private-best-500m.ckpt
+  max_seq_len:  1000            # skip RNAPro above this
+  n_cycles:     10
+  n_diffusion_steps: 200
+  n_samples:    1
+  dtype:        bf16
+  use_msa:      true
+  use_template: ca_precomputed
+  seed:         42
+
+# ── Submission assembly ───────────────────────
+submission:
+  # slot → description
+  # 0: RNAPro + TBM template 0
+  # 1: RNAPro + TBM template 1
+  # 2: RNAPro + Protenix template 0
+  # 3: RNAPro + Protenix template 1
+  # 4: Pure Protenix pred 1 (direct)
+  n_predictions:   5
+  coord_clip_min: -999.999
+  coord_clip_max:  9999.999
+  fallback_long_seq: tbm        # use TBM×5 for seq > rnapro.max_seq_len
