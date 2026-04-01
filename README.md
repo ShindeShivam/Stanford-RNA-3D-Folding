@@ -1,4 +1,4 @@
-# 🥇 Stanford RNA 3D Folding Part 2 — 6th Place Solution
+# 🏅 Stanford RNA 3D Folding Part 2 — 6th Place Solution
 
 **Competition:** [Stanford RNA 3D Folding Part 2](https://www.kaggle.com/competitions/stanford-rna-3d-folding-2)  
 **Final standing:** 6th / 1867 teams · Score: 0.479 · Gold Medal 🏅
