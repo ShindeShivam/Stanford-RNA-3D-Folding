@@ -32,7 +32,7 @@ The core idea: use **Template-Based Modeling (TBM)** to generate cheap structura
                   │                              ▼
                   │                      ┌──────────────┐
                   │                      │    RNAPro    │
-                  │                      │  (refine +    │
+                  │                      │  (refine +   │
                   │                      │   MSA +      │
                   │                      │ RibonanzaNet)│
                   │                      └──────┬───────┘
@@ -48,7 +48,7 @@ The core idea: use **Template-Based Modeling (TBM)** to generate cheap structura
           │  P4 : RNAPro  +  Protenix template [1]   │
           │  P5 : Pure Protenix [0]  (no RNAPro)     │
           ├──────────────────────────────────────────┤
-          │  ⚠️  seq > 1000 nt → TBM × 5 (all slots)  │
+          │  ⚠️  seq > 1000 nt → TBM × 5 (all slots) │
           └──────────────────────────────────────────┘
 ```
 
