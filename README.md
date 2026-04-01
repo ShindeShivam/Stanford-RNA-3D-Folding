@@ -22,7 +22,7 @@ The core idea: use **Template-Based Modeling (TBM)** to generate cheap structura
                   │                ▼                             ▼
                   │         ┌─────────────┐             ┌─────────────┐
                   │         │     TBM     │             │   Protenix  │
-                  │         │  (fast, 5   │             │  (neural,   │
+                  │         │  (fast, 5   │             │  (no TBM,   │
                   │         │   diverse)  │             │  no MSA)    │
                   │         └──────┬──────┘             └──────┬──────┘
                   │                │                           │
