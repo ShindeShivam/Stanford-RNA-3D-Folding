@@ -7,7 +7,7 @@
 
 ## Solution Overview
 
-The core idea: use **Template-Based Modeling (TBM)** to generate cheap structural hypotheses, then use two neural models (**Protenix** and **RNAPro**) to independently refine them — feeding TBM and Protenix outputs *back into RNAPro as precomputed templates*. This cross-pollination strategy gave five structurally diverse predictions per target, which the competition metric (best-of-5 TM-score) rewards heavily.
+The core idea: use **Template-Based Modeling (TBM)** to generate cheap structural hypotheses, then use  **Protenix** in no-MSA, no-template mode to produce independent neural prediction. These outputs were later fed into **RNAPro** as templates, allowing the model to explore different regions of structure space.  This cross-pollination strategy gave five structurally diverse predictions per target, which the competition metric (best-of-5 TM-score) rewards heavily.
 ```
                          ┌──────────────────┐
                          │    Test Seqs     │
@@ -175,7 +175,7 @@ python run_inference.py --config configs/inference_config.yaml --debug
 
 ## Hardware
 
-- 2 × NVIDIA T4 (Kaggle)
+- GPU P100 (Kaggle)
 
 ---
 
