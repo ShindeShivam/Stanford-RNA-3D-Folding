@@ -9,32 +9,47 @@
 
 The core idea: use **Template-Based Modeling (TBM)** to generate cheap structural hypotheses, then use two neural models (**Protenix** and **RNAPro**) to independently refine them — feeding TBM and Protenix outputs *back into RNAPro as precomputed templates*. This cross-pollination strategy gave five structurally diverse predictions per target, which the competition metric (best-of-5 TM-score) rewards heavily.
 ```
-                    ┌──────────────┐
-                    │  Test Seqs   │
-                    └──────┬───────┘
-                           │
-           ┌───────────────┼────────────────┐
-           ▼               ▼                ▼
-     ┌───────────┐   ┌───────────┐   (seq ≤ 1000 nt)
-     │    TBM    │   │  Protenix │
-     │  (fast)   │   │ (neural)  │
-     └─────┬─────┘   └─────┬─────┘
-           │               │
-           └───────┬────────┘
-                   ▼
-            ┌─────────────┐
-            │   RNAPro    │  ← conditioned on TBM/Protenix templates
-            │  (refine)   │
-            └─────┬───────┘
-                  ▼
-     ┌─────────────────────────────┐
-     │        5 Predictions        │
-     │  P1: RNAPro + TBM[0]        │
-     │  P2: RNAPro + TBM[1]        │
-     │  P3: RNAPro + Protenix[0]   │
-     │  P4: RNAPro + Protenix[1]   │
-     │  P5: Pure Protenix[0]       │
-     └─────────────────────────────┘
+                         ┌──────────────────┐
+                         │    Test Seqs     │
+                         └────────┬─────────┘
+                                  │
+                  ┌───────────────┴───────────────┐
+                  │                               │
+                  ▼                               ▼
+           seq > 1000 nt                   seq ≤ 1000 nt
+                  │                               │
+                  │                ┌──────────────┴──────────────┐
+                  │                ▼                             ▼
+                  │         ┌─────────────┐             ┌─────────────┐
+                  │         │     TBM     │             │   Protenix  │
+                  │         │  (fast, 5   │             │  (neural,   │
+                  │         │   diverse)  │             │  no MSA)    │
+                  │         └──────┬──────┘             └──────┬──────┘
+                  │                │                           │
+                  │         TBM[0..4]              Protenix[0..1] as templates
+                  │                │                           │
+                  │                └─────────────┬─────────────┘
+                  │                              ▼
+                  │                      ┌──────────────┐
+                  │                      │    RNAPro    │
+                  │                      │  (refine +    │
+                  │                      │   MSA +      │
+                  │                      │ RibonanzaNet)│
+                  │                      └──────┬───────┘
+                  │                             │
+                  └──────────────┬──────────────┘
+                                 ▼
+          ┌──────────────────────────────────────────┐
+          │              5 Predictions               │
+          ├──────────────────────────────────────────┤
+          │  P1 : RNAPro  +  TBM template [0]        │
+          │  P2 : RNAPro  +  TBM template [1]        │
+          │  P3 : RNAPro  +  Protenix template [0]   │
+          │  P4 : RNAPro  +  Protenix template [1]   │
+          │  P5 : Pure Protenix [0]  (no RNAPro)     │
+          ├──────────────────────────────────────────┤
+          │  ⚠️  seq > 1000 nt → TBM × 5 (all slots)  │
+          └──────────────────────────────────────────┘
 ```
 
 ---
